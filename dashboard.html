@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style/dashboard.css?v=hero-hub-1">
+    <!-- NOTIFICATION BELL -->
+    <link rel="stylesheet" href="style/notificationbell.css">
+    <!--  DARK MODE -->
+    <link rel="stylesheet" href="style/darkmode.css">
+    <script src="script/darkmode.js"></script>
+    <!-- PROFILE DROPDOWN -->
+    <link rel="stylesheet" href="style/profiledropdown.css">
+    <!-- QUIZ MODE SELECTOR (Normal / Time Attack) -->
+    <link rel="stylesheet" href="style/time-attack-mode.css">
+    <link rel="icon" type="image/x-icon" href="image/logo2.png">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <title>RecallGen | Dashboard</title>
+    <link rel="stylesheet" href="style/app-layout.css?v=shared-layout-1">
+
+</head>
+<body id="app-body" data-app-layout="shared" data-app-page="dashboard">
+
+    <div class="glass-container">
+
+        <!-- BURGER BUTTON -->
+        <button class="burger-btn" id="burgerBtn">
+            <span></span><span></span><span></span>
+        </button>
+
+        <!-- OVERLAY -->
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar" id="sidebar">
+            <div class="brand">
+                <img src="image/logo_rrg.png" alt="RecallGen">
+                <h2>RecallGen</h2>
+            </div>
+            <nav>
+                <a href="dashboard.html" class="nav-item active"><i class="fas fa-home"></i> <span>Dashboard</span></a>
+                <a href="quiz.html" class="nav-item"><i class="fas fa-brain"></i> <span>Create Quiz</span></a>
+                <a href="summarize.html" class="nav-item"><i class="fas fa-align-left"></i> <span>Summarize</span></a>
+                <a href="analytics.html" class="nav-item"><i class="fas fa-chart-line"></i> <span>Analytics</span></a>
+                <a href="settings.html" class="nav-item"><i class="fas fa-cog"></i> <span>Settings</span></a>
+            </nav>
+            <button id="logout-btn" class="logout-link">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="main-content">
+            <header class="top-nav">
+                <div class="welcome-section">
+                    <h1>Welcome, <span id="display-username">Explorer</span>! 👋</h1>
+                    <p>Ready to turn your files into knowledge?</p>
+                </div>
+                <div class="profile-preview">
+
+                    <!-- NOTIFICATION BELL -->
+                    <div class="notif-bell-wrap" id="notif-bell-wrap">
+                        <button class="notif-bell-btn" id="notif-bell-btn" title="Recent Activity">
+                            <i class="fas fa-bell"></i>
+                        </button>
+                        <span class="notif-bell-badge hidden" id="notif-bell-badge">0</span>
+
+                        <!-- DROPDOWN -->
+                        <div class="notif-dropdown hidden" id="notif-dropdown">
+                            <div class="notif-dropdown-header">
+                                <div class="activity-title">
+                                    <i class="fas fa-bolt"></i>
+                                    <h3>Recent Activity</h3>
+                                </div>
+                                <span class="activity-count" id="activity-count">Loading...</span>
+                            </div>
+                            <div class="activity-list" id="activity-list">
+                                <div class="activity-skeleton"></div>
+                                <div class="activity-skeleton"></div>
+                                <div class="activity-skeleton"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <img src="image/default-pfp.png" id="nav-pfp" alt="Profile">
+                </div>
+            </header>
+
+            <!-- CONTENT GRID -->
+            <section class="content-grid">
+
+                <!-- NEW: UPLOAD HERO (moved to the top). Same ids as before. -->
+                <section class="upload-hero" aria-label="Upload study material">
+                    <div class="drop-zone drop-zone--compact" id="drop-zone">
+                        <div class="dz-icon"><i class="fas fa-cloud-upload-alt"></i></div>
+                        <div class="dz-text">
+                            <strong>Upload Study Material</strong>
+                            <span>Drag &amp; drop a file here, or browse your device</span>
+                            <div class="dz-formats" aria-hidden="true"><em>PDF</em><em>PNG</em><em>JPG</em><em>Max 50MB</em></div>
+                        </div>
+                        <input type="file" id="file-input" accept=".pdf, .png, .jpg" hidden>
+                        <button class="btn-browse" id="browse-btn" onclick="document.getElementById('file-input').click()">
+                            <i class="fas fa-folder-open" aria-hidden="true"></i> Browse Files
+                        </button>
+                    </div>
+                </section>
+
+                <!-- QUICK START BANNER -->
+                <div class="quickstart-banner" id="quickstart-banner">
+                    <div class="qs-header">
+                        <div class="qs-title">
+                            <i class="fas fa-lightbulb"></i>
+                            <span>Quick Start Guide</span>
+                        </div>
+                        <button class="qs-close" id="qs-close" title="Dismiss">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="qs-steps">
+                        <div class="qs-step">
+                            <div class="qs-step-num">1</div>
+                            <div class="qs-step-icon"><i class="fas fa-cloud-upload-alt"></i></div>
+                            <div class="qs-step-text">
+                                <strong>Upload your PDF</strong>
+                                <span>Click "Browse Files" above to upload your study material.</span>
+                            </div>
+                        </div>
+                        <div class="qs-arrow"><i class="fas fa-chevron-right"></i></div>
+                        <div class="qs-step">
+                            <div class="qs-step-num">2</div>
+                            <div class="qs-step-icon"><i class="fas fa-folder-open"></i></div>
+                            <div class="qs-step-text">
+                                <strong>Go to My Modules</strong>
+                                <span>Find your uploaded files anytime in My Modules.</span>
+                            </div>
+                        </div>
+                        <div class="qs-arrow"><i class="fas fa-chevron-right"></i></div>
+                        <div class="qs-step">
+                            <div class="qs-step-num">3</div>
+                            <div class="qs-step-icon"><i class="fas fa-brain"></i></div>
+                            <div class="qs-step-text">
+                                <strong>Take a Quiz</strong>
+                                <span>Let AI generate questions from your module automatically.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-primary-column">
+
+                <!-- QUIZ MODE SELECTOR -->
+                <div class="upload-card upload-card--modes">
+
+                    <!-- Mode chooser -->
+                    <div class="mode-section">
+                        <div class="mode-header">
+                            <h3>Choose your quiz mode</h3>
+                            <div class="mode-file-select" id="mode-module-picker">
+                                <i class="fas fa-file-pdf" aria-hidden="true"></i>
+                                <select id="mode-file-select" aria-label="Choose a module for the quiz"></select>
+                                <div class="module-picker-ui" id="mode-module-picker-ui" hidden>
+                                    <button class="module-picker-trigger" id="mode-module-trigger" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="mode-module-menu">
+                                        <span class="module-picker-icon"><i class="fas fa-folder-open" aria-hidden="true"></i></span>
+                                        <span class="module-picker-caption">
+                                            <span>Quiz module</span>
+                                            <strong id="mode-module-label">Loading modules...</strong>
+                                        </span>
+                                        <i class="fas fa-chevron-down module-picker-chevron" aria-hidden="true"></i>
+                                    </button>
+                                    <div class="module-picker-menu" id="mode-module-menu" role="dialog" aria-label="Choose a quiz module" hidden>
+                                        <div class="module-picker-search">
+                                            <i class="fas fa-search" aria-hidden="true"></i>
+                                            <input id="mode-module-search" type="search" placeholder="Search modules..." autocomplete="off" aria-label="Search your modules" role="combobox" aria-expanded="false" aria-autocomplete="list" aria-controls="mode-module-list">
+                                        </div>
+                                        <div class="module-picker-meta">
+                                            <span id="mode-module-count" role="status">Loading...</span>
+                                            <span>Normal &amp; Time Attack</span>
+                                        </div>
+                                        <div class="module-picker-list" id="mode-module-list" role="listbox" aria-label="Your modules"></div>
+                                        <p class="module-picker-status" id="mode-module-status" role="status">Loading your modules...</p>
+                                        <button class="module-picker-retry" id="mode-module-retry" type="button" hidden><i class="fas fa-redo" aria-hidden="true"></i> Try again</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mode-grid" role="radiogroup" aria-label="Quiz mode">
+
+                            <!-- NORMAL -->
+                            <div class="mode-card selected" data-mode="normal" role="radio" aria-checked="true" tabindex="0">
+                                <span class="mode-radio"><i class="fas fa-check"></i></span>
+                                <div class="mode-top">
+                                    <div class="mode-icon"><i class="fas fa-book-open"></i></div>
+                                    <div>
+                                        <div class="mode-title">Normal</div>
+                                        <div class="mode-desc">Take your time and learn as you go.</div>
+                                    </div>
+                                </div>
+                                <div class="mode-chips">
+                                    <span>No timer</span>
+                                    <span>Instant explanations</span>
+                                    <span>Retry anytime</span>
+                                </div>
+                                <div class="mode-actions">
+                                    <button class="btn-mode-start" type="button">Start Normal</button>
+                                </div>
+                            </div>
+
+                            <!-- TIME ATTACK -->
+                            <div class="mode-card mode-card--time" data-mode="time" role="radio" aria-checked="false" tabindex="0">
+                                <span class="mode-radio"><i class="fas fa-check"></i></span>
+                                <div class="mode-top">
+                                    <div class="mode-icon"><i class="fas fa-bolt"></i></div>
+                                    <div>
+                                        <div class="mode-title">Time Attack <span class="mode-new">NEW</span></div>
+                                        <div class="mode-desc">Finish the whole quiz before time runs out.</div>
+                                    </div>
+                                </div>
+                                <div class="mode-chips">
+                                    <span>One quiz-wide timer</span>
+                                    <span>+5s every 3-streak</span>
+                                    <span>Time's up = quiz ends</span>
+                                </div>
+                                <div class="mode-actions">
+                                    <div class="time-picker">
+                                        <i class="fas fa-stopwatch"></i>
+                                        <div class="time-seg" role="group" aria-label="Total time for the quiz">
+                                            <button type="button" data-seconds="60">60s</button>
+                                            <button type="button" data-seconds="90" class="active">90s</button>
+                                            <button type="button" data-seconds="120">120s</button>
+                                        </div>
+                                    </div>
+                                    <button class="btn-mode-start btn-mode-start--time" type="button">Start Time Attack</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                </div>
+
+                <div class="dashboard-side-column">
+
+                <!-- NEW: QUIZ HUB — "Continue where you left off" + "Recent quizzes" in one toggle card.
+                     dashboard.js creates the paused section; dashboard-enhance (below) moves it into #hub-pane-continue. -->
+                <section class="quiz-hub" id="quiz-hub" data-has-continue="false" aria-label="Your quizzes">
+                    <div class="hub-head">
+                        <div class="hub-tabs" role="tablist" aria-label="Quiz lists" data-active="recent">
+                            <button type="button" class="hub-tab" role="tab" id="hub-tab-continue" data-tab="continue" aria-selected="false" aria-controls="hub-pane-continue" tabindex="-1">
+                                <i class="fas fa-play-circle hub-tab-icon" aria-hidden="true"></i>
+                                <span class="hub-tab-label">Continue</span>
+                                <span class="hub-count" id="hub-count-continue">0</span>
+                                <i class="hub-dot" aria-hidden="true"></i>
+                            </button>
+                            <button type="button" class="hub-tab" role="tab" id="hub-tab-recent" data-tab="recent" aria-selected="true" aria-controls="hub-pane-recent" tabindex="0">
+                                <i class="fas fa-history hub-tab-icon" aria-hidden="true"></i>
+                                <span class="hub-tab-label">Recent</span>
+                                <span class="hub-count" id="hub-count-recent">0</span>
+                            </button>
+                        </div>
+                        <p class="hub-caption" id="hub-caption" aria-live="polite">Loading your quizzes…</p>
+                    </div>
+
+                    <div class="hub-body">
+                        <div class="hub-pane" id="hub-pane-continue" role="tabpanel" aria-labelledby="hub-tab-continue" hidden>
+                            <div class="hub-empty" id="hub-empty-continue" hidden>
+                                <i class="fas fa-mug-hot" aria-hidden="true"></i>
+                                <strong>Nothing paused</strong>
+                                <p>When you pause a quiz, it shows up here so you can pick up right where you stopped.</p>
+                            </div>
+                        </div>
+
+                        <div class="hub-pane" id="hub-pane-recent" role="tabpanel" aria-labelledby="hub-tab-recent">
+                            <!-- RECENT QUIZZES (your original markup, unchanged) -->
+                            <aside class="section-card recent-quizzes-panel" id="recent-quizzes-section" aria-labelledby="recent-quizzes-title">
+                                <div class="rq-section-header">
+                                    <h3 id="recent-quizzes-title"><i class="fas fa-history" aria-hidden="true"></i> Recent Quizzes</h3>
+                                </div>
+                                <div class="section-divider"></div>
+                                <div class="rq-cards" id="rq-cards-list" aria-live="polite">
+                                    <div class="rq-empty"><i class="fas fa-spinner fa-spin" aria-hidden="true"></i><p>Loading quizzes...</p></div>
+                                </div>
+                            </aside>
+                        </div>
+                    </div>
+                </section>
+
+                </div>
+
+                <!-- STUDY PLANNER: isolated calendar and per-account tasks -->
+                <section class="study-planner" id="study-planner" aria-labelledby="sp-title">
+                    <header class="sp-header">
+                        <span class="sp-header-icon" aria-hidden="true"><i class="fas fa-calendar-alt"></i></span>
+                        <div>
+                            <h3 id="sp-title">Study Planner</h3>
+                            <p>Plan your next study session.</p>
+                        </div>
+                        <button class="sp-icon-btn" id="sp-refresh" type="button" aria-label="Refresh study plans" title="Refresh study plans"><i class="fas fa-sync-alt" aria-hidden="true"></i></button>
+                    </header>
+
+                    <div class="sp-planner-body">
+                        <div class="sp-calendar-pane">
+                            <div class="sp-month-nav">
+                                <button class="sp-icon-btn" id="sp-prev" type="button" aria-label="Previous month"><i class="fas fa-chevron-left" aria-hidden="true"></i></button>
+                                <h4 id="sp-month" aria-live="polite">Your calendar</h4>
+                                <button class="sp-icon-btn" id="sp-next" type="button" aria-label="Next month"><i class="fas fa-chevron-right" aria-hidden="true"></i></button>
+                            </div>
+                            <div class="sp-calendar-caption"><span>Select a date</span><button id="sp-today" class="sp-text-btn" type="button">Today</button></div>
+                            <div class="sp-weekdays" aria-hidden="true"><span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span></div>
+                            <div class="sp-calendar-grid" id="sp-calendar" role="group" aria-labelledby="sp-month" aria-busy="true"></div>
+                            <div class="sp-calendar-legend"><span><i class="sp-legend-dot" aria-hidden="true"></i> Scheduled</span><span id="sp-month-count">Loading plans…</span></div>
+                        </div>
+
+                        <div class="sp-agenda-pane">
+                            <div class="sp-agenda-header">
+                                <div><span class="sp-eyebrow">YOUR TO-DO LIST</span><h4 id="sp-selected-date">Today's plans</h4></div>
+                                <button id="sp-add" class="sp-add-btn" type="button" disabled><i class="fas fa-plus" aria-hidden="true"></i> Add task</button>
+                            </div>
+                            <div class="sp-progress-row"><span id="sp-progress-label">0 of 0 completed</span><span id="sp-progress-percent">0%</span></div>
+                            <div id="sp-progress" class="sp-progress" role="progressbar" aria-label="Tasks completed for selected date" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="sp-progress-fill"></span></div>
+                            <div class="sp-status" id="sp-status" role="status" aria-live="polite"><span id="sp-status-text">Loading your study plans…</span><button id="sp-retry" class="sp-text-btn" type="button" hidden>Try again</button></div>
+                            <div class="sp-tasks" id="sp-tasks" role="list" aria-label="Tasks for the selected date"></div>
+                            <p class="sp-announcement sp-sr-only" id="sp-announcement" role="status" aria-live="polite"></p>
+                        </div>
+                    </div>
+                </section>
+
+            </section>
+        </main>
+
+    </div>
+
+    <!-- Study Planner editor; native dialog keeps focus inside the form. -->
+    <dialog class="sp-dialog" id="sp-task-dialog" aria-labelledby="sp-dialog-title" aria-describedby="sp-dialog-intro">
+        <form id="sp-task-form">
+            <div class="sp-dialog-header"><div><span class="sp-eyebrow">STUDY PLANNER</span><h2 id="sp-dialog-title">Add a study task</h2></div><button class="sp-icon-btn" id="sp-dialog-close" type="button" aria-label="Close task editor"><i class="fas fa-times" aria-hidden="true"></i></button></div>
+            <p id="sp-dialog-intro">Set aside time for your next review.</p>
+            <label class="sp-field" for="sp-task-title">What will you work on?<input id="sp-task-title" name="title" type="text" maxlength="120" placeholder="e.g. Review Biology, Chapter 3" autocomplete="off" required autofocus><span>Up to 120 characters.</span></label>
+            <div class="sp-form-row">
+                <label class="sp-field" for="sp-task-date">Date<input id="sp-task-date" name="task_date" type="date" min="1900-01-01" max="2100-12-31" required></label>
+                <label class="sp-field" for="sp-task-time">Time (optional)<input id="sp-task-time" name="task_time" type="time" step="60"></label>
+            </div>
+            <p class="sp-form-error" id="sp-form-error" role="alert" hidden></p>
+            <div class="sp-delete-confirm" id="sp-delete-confirm" hidden><p>Delete this task? This cannot be undone.</p><div><button class="sp-secondary-btn" id="sp-keep-task" type="button">Keep task</button><button class="sp-danger-btn" id="sp-confirm-delete" type="button">Yes, delete</button></div></div>
+            <div class="sp-dialog-footer"><button class="sp-delete-btn" id="sp-delete" type="button" hidden><i class="fas fa-trash-alt" aria-hidden="true"></i> Delete</button><div><button class="sp-secondary-btn" id="sp-cancel" type="button">Cancel</button><button class="sp-primary-btn" id="sp-save" type="submit">Save task</button></div></div>
+        </form>
+    </dialog>
+
+    <!-- Normal script first so window.populateModeFiles exists before the module scripts run -->
+    <script src="script/mode-selector.js"></script>
+
+
+    <script type="module" src="script/dashboard.js?v=hero-hub-1"></script>
+    <!-- <script type="module" src="script/chatbotwidget.js"></script> -->
+
+</body>
+</html>
